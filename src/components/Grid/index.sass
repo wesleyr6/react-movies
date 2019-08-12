@@ -1,0 +1,37 @@
+@import '../../assets/styles/mixins'
+@import '../../assets/styles/media-query'
+
+$grid-default: 12
+
+[class^="grid-col-"]
+  display: inline-flex
+  flex-wrap: wrap
+  box-sizing: border-box
+  width: 100%
+  max-width: 100%
+  flex-basis: 100%
+  @include transition-animation
+
+.grid-row
+  display: flex
+  flex-wrap: wrap
+
+  @for $i from 1 through $grid-default
+    .grid-col-lg-#{$i}
+      @include percentWidth('max-width', $grid-default, $i)
+      @include percentWidth('flex-basis', $grid-default, $i)
+
+    .grid-col-sm-#{$i}
+      @include small-tablet-screen
+        @include percentWidth('max-width', $grid-default, $i)
+        @include percentWidth('flex-basis', $grid-default, $i)
+
+    .grid-col-md-#{$i}
+      @include tablet-screen
+        @include percentWidth('max-width', $grid-default, $i)
+        @include percentWidth('flex-basis', $grid-default, $i)
+
+    .grid-col-xs-#{$i}
+      @include mobile-screen
+        @include percentWidth('max-width', $grid-default, $i)
+        @include percentWidth('flex-basis', $grid-default, $i)
