@@ -1,0 +1,42 @@
+@import '../../assets/styles/colors'
+@import '../../assets/styles/media-query'
+
+.header
+  width: 100%
+  max-height: 60px
+
+  .wrapper
+    height: auto
+    background-color: $black
+    padding: 15px 20px
+    box-sizing: border-box
+
+  &-logo
+    width: 100%
+    display: inline-flex
+    align-items: center
+    @include mobile-screen
+      justify-content: center
+
+    a
+      text-decoration: none
+      color: $orange
+      font-size: 2.5rem
+
+      &:hover
+        text-decoration: none
+        color: $orange
+
+  &-search
+    display: inline-flex
+    width: 100%
+
+    input
+      color: $white
+      background-color: #333333
+      border: 1px solid #666666 !important
+
+    button
+      font-size: 1.3rem
+      width: 100px
+      text-align: center
