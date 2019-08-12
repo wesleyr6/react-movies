@@ -1,0 +1,21 @@
+$web-width: 1366px
+$tablet-width: 1024px
+$small-tablet-width: 812px
+$mobile-width: 425px
+
+@mixin web-screen
+  @media screen and (max-width: $web-width)
+    @content;
+
+@mixin tablet-screen
+  @media screen and (max-width: $tablet-width)
+    @content;
+
+@mixin small-tablet-screen
+  @media screen and (max-width: $small-tablet-width)
+    @content;
+
+@mixin mobile-screen
+  @media screen and (max-width: $mobile-width)
+    @content;
+

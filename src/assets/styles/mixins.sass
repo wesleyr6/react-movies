@@ -1,0 +1,11 @@
+@mixin ellipsis
+	white-space: nowrap
+	overflow: hidden
+	text-overflow: ellipsis
+
+@mixin transition-animation
+	transition: all 0.25s ease-in-out
+
+@mixin percentWidth($property, $columns, $count)
+  #{$property}: ((100% / $columns) * $count)
+

@@ -1,0 +1,61 @@
+@import 'colors'
+@import 'mixins'
+
+::placeholder
+  color: #ababab
+  text-transform: lowercase
+
+label,
+input,
+select,
+textarea
+  font-size: 1.4rem
+  outline: none
+
+label
+  width: 100%
+  display: block
+  margin-bottom: 5px
+
+select
+  border: none
+  height: 35px
+  background-color: $white
+  border: 1px solid $input-border-color
+  box-sizing: border-box
+  border-radius: 0px
+  cursor: pointer
+  -moz-appearance: none
+  -webkit-appearance: none
+  appearance: none
+  // background-image: url('../images/select-arrow.png')
+  background-repeat: no-repeat
+  background-position: right 9px center
+  background-size: 13px
+  padding: 0px 32px 0px 15px
+
+  &:invalid
+    color: #ababab
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea
+  box-sizing: border-box
+  padding: 8px 15px
+  border: 1px solid $input-border-color
+  outline: none
+  @include transition-animation
+
+  &:hover
+    border-color: $input-border-color
+
+  &:disabled
+    background-color: #FBFBFB
+
+textarea
+  resize: vertical
+  min-height: 35px
+  max-height: 400px
