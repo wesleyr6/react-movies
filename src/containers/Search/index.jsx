@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import MasterPage from '../../components/MasterPage';
 import { Row, Col } from '../../components/Grid';
 import Cards from '../../components/Cards';
+import DiscoverMovies from '../DiscoverMovies';
+import AlertMessages from '../../components/AlertMessages';
 import { getSearchedMovies } from '../../actions/search';
 import './index.sass';
 
@@ -18,40 +20,41 @@ class Home extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { searchedMovies, keyword, history } = this.props;
-    const parsed = queryString.parse(history.location.search);
+    const { location, keyword } = this.props;
 
-    if (prevProps.searchedMovies.length !== searchedMovies.length
-      || prevProps.keyword !== keyword) {
-      this.onHandleChange('loading', false);
+    if (prevProps.keyword !== keyword) {
+      this.enableLoader(false);
     }
 
-    if (parsed && parsed.movie && keyword !== parsed.movie) {
+    if (prevProps.location.search !== location.search) {
       this.search();
     }
   }
 
   search = () => {
     const {
-      history,
+      location,
       getSearchedMovies: getSearchedMoviesAction,
     } = this.props;
 
-    if (history.location.search) {
-      const parsed = queryString.parse(history.location.search);
+    if (location.search) {
+      const parsed = queryString.parse(location.search);
 
       if (parsed && parsed.movie && parsed.movie.length > 0) {
+        this.enableLoader(true);
         getSearchedMoviesAction(parsed.movie);
       } else {
-        this.onHandleChange('loading', false);
+        this.enableLoader(false);
       }
     } else {
-      this.onHandleChange('loading', false);
+      this.enableLoader(false);
     }
   }
 
-  onHandleChange = (name, value) => {
-    this.setState({ [name]: value });
+  enableLoader = (value) => {
+    this.setState({
+      loading: value,
+    });
   }
 
   render() {
@@ -96,16 +99,22 @@ class Home extends React.Component {
 
                   {
                     !error && searchedMovies.length === 0 && (
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          xs={12}
-                        >
-                          <span className="search-message">Any results found.</span>
-                        </Col>
-                      </Row>
+                      <React.Fragment>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            xs={12}
+                          >
+                            <span className="search-message">Any results found.</span>
+                          </Col>
+                        </Row>
+
+                        <div className="search-discover">
+                          <DiscoverMovies />
+                        </div>
+                      </React.Fragment>
                     )
                   }
 
@@ -118,7 +127,11 @@ class Home extends React.Component {
                           sm={12}
                           xs={12}
                         >
-                          <span className="search-message">{error}</span>
+                          <AlertMessages
+                            show
+                            type="error"
+                            message={error}
+                          />
                         </Col>
                       </Row>
                     )
@@ -137,7 +150,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired,
   getSearchedMovies: PropTypes.func.isRequired,
   searchedMovies: PropTypes.instanceOf(Array),
   keyword: PropTypes.string,
