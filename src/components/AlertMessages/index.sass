@@ -1,0 +1,36 @@
+
+@import '../../assets/styles/colors'
+
+.alertMessages
+  display: flex
+  flex-wrap: nowrap
+  justify-content: space-between
+  width: 100%
+  padding: 20px
+  box-sizing: border-box
+  font-size: 1.4rem
+  line-height: 1.8rem
+  margin-bottom: 25px
+
+  i[class^="icon-"]
+    font-size: 1.9rem
+    color: $white
+
+  &-message
+    width: calc(100% - 39px) // 19 icon size + 20 margin-right
+
+  &-error
+    background-color: $red
+    color: $white
+
+  &-warning
+    background-color: $orange
+    color: $black
+
+  &-success
+    background-color: $green
+    color: $black
+
+  &-info
+    background-color: $blue
+    color: $white
