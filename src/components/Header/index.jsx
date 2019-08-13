@@ -80,6 +80,7 @@ class Header extends React.Component {
                   placeholder="search movie..."
                   value={search}
                   onChange={({ target }) => this.onHandleChange(target.name, target.value)}
+                  required
                 />
                 <button type="submit">
                   search
