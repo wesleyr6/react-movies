@@ -37,8 +37,9 @@ export const APIResquest = async (config) => {
       return data;
     } catch (err) {
       const errorMessage = 'Something went wrong.';
+
       if (err.response.data && err.response.data.status_message) {
-        throw err.response.status_message;
+        throw err.response.data.status_message;
       }
 
       throw errorMessage;
