@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Row, Col } from '../../components/Grid';
 import Cards from '../../components/Cards';
+import AlertMessages from '../../components/AlertMessages';
 import { getDiscoveryMovies } from '../../actions/movies';
 
 class DiscoverMovies extends React.Component {
@@ -37,13 +38,17 @@ class DiscoverMovies extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { discoveryMovies } = this.props;
+    const { discoveryMovies, discoveryMoviesError } = this.props;
 
     return (
       <section className="discover-movies">
         <h1>Suggested movies</h1>
         {
-          !loading && discoveryMovies.length > 0 ? (
+          loading && 'loading...'
+        }
+
+        {
+          !loading && !discoveryMoviesError && discoveryMovies.length > 0 && (
             <Row rowSpacing={15} cellSpacing={15}>
               {
                 discoveryMovies.map(item => (
@@ -59,10 +64,16 @@ class DiscoverMovies extends React.Component {
                 ))
               }
             </Row>
-          ) : (
-            <React.Fragment>
-              loading...
-            </React.Fragment>
+          )
+        }
+
+        {
+          !loading && discoveryMoviesError && (
+            <AlertMessages
+              show
+              type="error"
+              message={discoveryMoviesError}
+            />
           )
         }
       </section>
@@ -73,14 +84,17 @@ class DiscoverMovies extends React.Component {
 DiscoverMovies.propTypes = {
   getDiscoveryMovies: PropTypes.func.isRequired,
   discoveryMovies: PropTypes.instanceOf(Array),
+  discoveryMoviesError: PropTypes.string,
 };
 
 DiscoverMovies.defaultProps = {
   discoveryMovies: [],
+  discoveryMoviesError: null,
 };
 
 const mapStateToProps = state => ({
   discoveryMovies: state.movies.discoveryMovies,
+  discoveryMoviesError: state.movies.discoveryMoviesError,
 });
 
 export default connect(mapStateToProps, { getDiscoveryMovies })(DiscoverMovies);
