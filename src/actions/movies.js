@@ -1,6 +1,8 @@
 import { APIResquest } from '../utils/api';
 
 export const DISCOVERY_MOVIES = 'DISCOVERY_MOVIES';
+export const MOVIE_DETAILS = 'MOVIE_DETAILS';
+
 
 export function getDiscoveryMovies() {
   return (dispatch) => {
@@ -13,11 +15,37 @@ export function getDiscoveryMovies() {
     }).then((res) => {
       dispatch({
         type: DISCOVERY_MOVIES,
-        payload: res.results,
+        payload: {
+          data: res.results,
+          error: null,
+        },
       });
     }).catch(err => dispatch({
       type: DISCOVERY_MOVIES,
-      payload: err,
+      payload: {
+        error: err,
+      },
+    }));
+  };
+}
+
+export function getMovieDetails(movieID) {
+  return (dispatch) => {
+    APIResquest({
+      uri: `movie/${movieID}`,
+      method: 'GET',
+    }).then((res) => {
+      dispatch({
+        type: MOVIE_DETAILS,
+        payload: {
+          data: res,
+        },
+      });
+    }).catch(err => dispatch({
+      type: MOVIE_DETAILS,
+      payload: {
+        error: err,
+      },
     }));
   };
 }

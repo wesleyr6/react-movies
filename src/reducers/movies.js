@@ -1,7 +1,10 @@
-import { DISCOVERY_MOVIES } from '../actions/movies';
+import { DISCOVERY_MOVIES, MOVIE_DETAILS } from '../actions/movies';
 
 const initialState = {
   discoveryMovies: [],
+  discoveryMoviesError: null,
+  movieDetails: {},
+  movieDetailsError: null,
 };
 
 export default function (state = initialState, { type, payload }) {
@@ -9,7 +12,16 @@ export default function (state = initialState, { type, payload }) {
     case DISCOVERY_MOVIES: {
       return {
         ...state,
-        discoveryMovies: payload,
+        discoveryMovies: payload.data || [],
+        discoveryMoviesError: payload.error || null,
+      };
+    }
+
+    case MOVIE_DETAILS: {
+      return {
+        ...state,
+        movieDetails: payload.data || {},
+        movieDetailsError: payload.error || null,
       };
     }
 

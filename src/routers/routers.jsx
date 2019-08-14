@@ -1,5 +1,6 @@
 import Home from '../containers/Home';
 import Search from '../containers/Search';
+import Details from '../containers/Details';
 
 const myRoutes = [
   {
@@ -14,6 +15,13 @@ const myRoutes = [
     active: true,
     private: false,
     component: Search,
+    routerProps: {},
+  },
+  {
+    path: '/:movieID',
+    active: true,
+    private: false,
+    component: Details,
     routerProps: {},
   },
 ];
