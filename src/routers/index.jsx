@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import uuidv1 from 'uuid/v1';
-import { Switch, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import myRoutes from './routers';
 import PublicRoute from '../components/PublicRoute';
+import PageNotFound from '../containers/404';
 
 const Routers = () => (
   <BrowserRouter>
@@ -19,6 +20,8 @@ const Routers = () => (
           />
         ))
       }
+
+      <Route component={() => <PageNotFound />} />
     </Switch>
   </BrowserRouter>
 );
