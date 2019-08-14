@@ -1,10 +1,15 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Banner from '../../components/Banner';
 import DiscoverMovies from '../DiscoverMovies';
 
 const Home = () => (
   <React.Fragment>
+    <Helmet>
+      <title>React Movies: Home</title>
+    </Helmet>
+
     <Header />
     <Banner />
 

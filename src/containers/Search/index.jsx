@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
 import MasterPage from '../../components/MasterPage';
@@ -68,6 +69,13 @@ class Home extends React.Component {
 
     return (
       <MasterPage>
+        <Helmet>
+          <title>
+            {'React Movies: '}
+            {keyword || 'Search'}
+          </title>
+        </Helmet>
+
         <div className="wrapper search">
           <h1>
             Results found for:

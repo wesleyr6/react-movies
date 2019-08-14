@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Rating from 'react-rating';
@@ -79,6 +80,13 @@ class Details extends React.Component {
 
     return (
       <MasterPage>
+        <Helmet>
+          <title>
+            {'React Movies: '}
+            {title || 'Details'}
+          </title>
+        </Helmet>
+
         <div className="wrapper details">
           {
             loading && (

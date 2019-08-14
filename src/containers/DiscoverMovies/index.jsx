@@ -5,6 +5,7 @@ import { Row, Col } from '../../components/Grid';
 import Cards from '../../components/Cards';
 import AlertMessages from '../../components/AlertMessages';
 import { getDiscoveryMovies } from '../../actions/movies';
+import './index.sass';
 
 class DiscoverMovies extends React.Component {
   state = {
@@ -16,24 +17,35 @@ class DiscoverMovies extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { discoveryMovies } = this.props;
+    const { discoveryMovies, discoveryMoviesError } = this.props;
 
     if (prevProps.discoveryMovies.length !== discoveryMovies.length) {
       this.loadMovies();
     }
+
+    if (prevProps.discoveryMoviesError !== discoveryMoviesError) {
+      this.enableLoader(false);
+    }
   }
 
-  loadMovies = () => {
+  loadMovies = async () => {
     const {
       discoveryMovies,
       getDiscoveryMovies: getDiscoveryMoviesAction,
     } = this.props;
 
     if (discoveryMovies.length === 0) {
-      getDiscoveryMoviesAction();
+      this.enableLoader(true);
+      await getDiscoveryMoviesAction();
     } else {
-      this.setState({ loading: false });
+      this.enableLoader(false);
     }
+  }
+
+  enableLoader = (value) => {
+    this.setState({
+      loading: value,
+    });
   }
 
   render() {
@@ -44,7 +56,9 @@ class DiscoverMovies extends React.Component {
       <section className="discover-movies">
         <h1>Suggested movies</h1>
         {
-          loading && 'loading...'
+          loading && (
+            <span className="discover-movies-loading">loading...</span>
+          )
         }
 
         {
