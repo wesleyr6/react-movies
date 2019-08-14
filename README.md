@@ -1,17 +1,17 @@
 # React Movies Project
-This is a create react app using (react + redux) built in React 16.8
+This is a create react app with `react` and `redux` built in React 16.8
 
-## Goals
-Get movies, get movies details and search for movies.
+## Goal
+Allow us to get movies, get movies details and search for movies.
 
-## REST APIs
+## REST API
 [themoviedb](https://www.themoviedb.org/documentation/api)
 
 ## React Pattern
 ESLint using Airbnb styleguide
 
 ## Styles
-`sass`
+`sass` without any frameworks
 
 ## Middlewares
 `redux-thunk` and `redux-logger`
@@ -28,7 +28,7 @@ Create a `.env` file in the root of the project with the following information
 * REACT_APP_API_URL = `https://api.themoviedb.org/3`
 * REACT_APP_API_KEY = `your API key`
 
-Notice: If the `REACT_APP_ENV` is set to `production`, you will not able to see the redux dev tools neither the middlewares.
+Notice: If the `REACT_APP_ENV` is set to `production`, you will not able to see the redux dev tools neither the `redux-logger` middleware.
 
 ### Client
 * install all project dependencies with `npm install`
