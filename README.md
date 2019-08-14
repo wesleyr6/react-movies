@@ -23,7 +23,7 @@ ESLint using Airbnb styleguide
 To get started developing right away:
 
 ### Config Env Vars
-Create a `.env` file in the root of the project with the following information
+Create an `.env` file in the root of the project with the following information
 * REACT_APP_ENV = `dev`
 * REACT_APP_API_URL = `https://api.themoviedb.org/3`
 * REACT_APP_API_KEY = `your API key`
