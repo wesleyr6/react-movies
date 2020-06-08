@@ -1,15 +1,14 @@
 /* eslint-disable no-undef */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { store } from './store';
-import Routers from './routers';
-import './assets/styles/main.sass';
+import React from "react";
+import ReactDOM from "react-dom";
+import Routers from "./routers";
+import { GlobalProvider } from "./context/global";
+import "./assets/styles/main.sass";
 
 ReactDOM.render(
-  <Provider store={store}>
+  <GlobalProvider>
     <Routers />
-  </Provider>,
+  </GlobalProvider>,
 
-  document.getElementById('root'),
+  document.getElementById("root")
 );

@@ -1,165 +1,105 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import queryString from 'query-string';
-import { connect } from 'react-redux';
-import MasterPage from '../../components/MasterPage';
-import { Row, Col } from '../../components/Grid';
-import Cards from '../../components/Cards';
-import DiscoverMovies from '../DiscoverMovies';
-import AlertMessages from '../../components/AlertMessages';
-import { getSearchedMovies } from '../../actions/search';
-import './index.sass';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import Helmet from "react-helmet";
+import queryString from "query-string";
+import MasterPage from "../../components/MasterPage";
+import Loader from "../../components/Loader";
+import { Row, Col } from "../../components/Grid";
+import Cards from "../../components/Cards";
+import DiscoverMovies from "../../components/DiscoverMovies";
+import AlertMessages from "../../components/AlertMessages";
+import { getSearchedMovies } from "../../actions/search";
+import "./index.sass";
 
-class Home extends React.Component {
-  state = {
-    loading: true,
-  }
+const Home = ({ location }) => {
+  const [loading, setLoading] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [moviesError, setMoviesError] = useState("");
 
-  componentDidMount() {
-    this.search();
-  }
+  useEffect(() => {
+    search();
+    // eslint-disable-next-line
+  }, [location.search]);
 
-  componentDidUpdate(prevProps) {
-    const { location, keyword } = this.props;
-
-    if (prevProps.keyword !== keyword) {
-      this.enableLoader(false);
-    }
-
-    if (prevProps.location.search !== location.search) {
-      this.search();
-    }
-  }
-
-  search = () => {
-    const {
-      location,
-      getSearchedMovies: getSearchedMoviesAction,
-    } = this.props;
-
+  const search = async () => {
     if (location.search) {
       const parsed = queryString.parse(location.search);
 
       if (parsed && parsed.movie && parsed.movie.length > 0) {
-        this.enableLoader(true);
-        getSearchedMoviesAction(parsed.movie);
-      } else {
-        this.enableLoader(false);
+        setLoading(true);
+        setKeyword(parsed.movie);
+
+        try {
+          const { results } = await getSearchedMovies(parsed.movie);
+          setMovies(results);
+        } catch (err) {
+          setMoviesError(err);
+        }
       }
-    } else {
-      this.enableLoader(false);
     }
-  }
 
-  enableLoader = (value) => {
-    this.setState({
-      loading: value,
-    });
-  }
+    setLoading(false);
+  };
 
-  render() {
-    const {
-      searchedMovies,
-      error,
-      keyword,
-    } = this.props;
+  return (
+    <MasterPage>
+      <Helmet>
+        <title>
+          {"React Movies: "}
+          {keyword || "Search"}
+        </title>
+      </Helmet>
 
-    const { loading } = this.state;
+      <div className="wrapper search">
+        <h1>
+          Results found for: <strong>{keyword}</strong>
+        </h1>
 
-    return (
-      <MasterPage>
-        <Helmet>
-          <title>
-            {'React Movies: '}
-            {keyword || 'Search'}
-          </title>
-        </Helmet>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            {!!moviesError && (
+              <Row>
+                <Col lg={12} md={12} sm={12} xs={12}>
+                  <AlertMessages show type="error" message={moviesError} />
+                </Col>
+              </Row>
+            )}
 
-        <div className="wrapper search">
-          <h1>
-            Results found for:
-            {' '}
-            <strong>{keyword}</strong>
-          </h1>
-          {
-              !loading ? (
-                <React.Fragment>
-                  {
-                    !error && searchedMovies.length > 0 && (
-                      <Row rowSpacing={15} cellSpacing={15}>
-                        {
-                          searchedMovies.map(item => (
-                            <Col
-                              key={item.id}
-                              lg={2}
-                              md={3}
-                              sm={6}
-                              xs={12}
-                            >
-                              <Cards item={item} />
-                            </Col>
-                          ))
-                        }
-                      </Row>
-                    )
-                  }
+            {!moviesError && movies.length > 0 && (
+              <Row rowSpacing={15} cellSpacing={15}>
+                {movies.map((item) => (
+                  <Col key={item.id} lg={2} md={3} sm={6} xs={12}>
+                    <Cards item={item} />
+                  </Col>
+                ))}
+              </Row>
+            )}
 
-                  {
-                    !error && searchedMovies.length === 0 && (
-                      <React.Fragment>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            xs={12}
-                          >
-                            <span className="search-message">Any results found.</span>
-                          </Col>
-                        </Row>
+            {!moviesError && movies.length === 0 && (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} xs={12}>
+                    <span className="search-message">Any results found.</span>
+                  </Col>
+                </Row>
 
-                        <div className="search-discover">
-                          <DiscoverMovies />
-                        </div>
-                      </React.Fragment>
-                    )
-                  }
-
-                  {
-                    error && (
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          xs={12}
-                        >
-                          <AlertMessages
-                            show
-                            type="error"
-                            message={error}
-                          />
-                        </Col>
-                      </Row>
-                    )
-                  }
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  loading...
-                </React.Fragment>
-              )
-            }
-        </div>
-      </MasterPage>
-    );
-  }
-}
+                <div className="search-discover">
+                  <DiscoverMovies />
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    </MasterPage>
+  );
+};
 
 Home.propTypes = {
   location: PropTypes.instanceOf(Object).isRequired,
-  getSearchedMovies: PropTypes.func.isRequired,
   searchedMovies: PropTypes.instanceOf(Array),
   keyword: PropTypes.string,
   error: PropTypes.string,
@@ -171,10 +111,4 @@ Home.defaultProps = {
   error: null,
 };
 
-const mapStateToProps = state => ({
-  searchedMovies: state.search.searchedMovies,
-  keyword: state.search.keyword,
-  error: state.search.error,
-});
-
-export default connect(mapStateToProps, { getSearchedMovies })(Home);
+export default Home;

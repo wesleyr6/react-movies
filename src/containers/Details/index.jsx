@@ -1,231 +1,153 @@
 /* eslint-disable camelcase */
-import React from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import { connect } from 'react-redux';
-import moment from 'moment';
-import Rating from 'react-rating';
-import MasterPage from '../../components/MasterPage';
-import { Row, Col } from '../../components/Grid';
-import AlertMessages from '../../components/AlertMessages';
-import { getMovieDetails } from '../../actions/movies';
-import noImageIMG from '../../assets/images/no-image-available.jpeg';
-import './index.sass';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import Helmet from "react-helmet";
+import moment from "moment";
+import Rating from "react-rating";
+import MasterPage from "../../components/MasterPage";
+import Loader from "../../components/Loader";
+import { Row, Col } from "../../components/Grid";
+import AlertMessages from "../../components/AlertMessages";
+import { getMovieDetails } from "../../actions/movies";
+import noImageIMG from "../../assets/images/no-image-available.jpeg";
+import "./index.sass";
 
-class Details extends React.Component {
-  state = {
-    loading: true,
-  }
+const Details = ({ match }) => {
+  const [loadingDetails, setLoadingDetails] = useState(true);
+  const [details, setDetails] = useState({});
+  const [detailsError, setDetailsError] = useState("");
 
-  componentDidMount() {
-    this.loadMovieDetails();
-  }
+  useEffect(() => {
+    loadMovieDetails();
+    // eslint-disable-next-line
+  }, [match.params]);
 
-  componentDidUpdate(prevProps) {
-    const {
-      movieDetails,
-      movieDetailsError,
-      match: { params: { movieID } },
-    } = this.props;
-
-    if (prevProps.movieDetails !== movieDetails) {
-      this.enableLoader(false);
+  const loadMovieDetails = async () => {
+    if (match.params && match.params.movieID) {
+      try {
+        const data = await getMovieDetails(match.params.movieID);
+        setDetails(data);
+      } catch (err) {
+        setDetailsError(err);
+      }
+    } else {
+      setDetailsError("OPS! We could not find that movie.");
     }
 
-    if (prevProps.movieDetailsError !== movieDetailsError) {
-      this.enableLoader(false);
-    }
+    setLoadingDetails(false);
+  };
 
-    if (prevProps.match.params.movieID !== movieID) {
-      this.loadMovieDetails();
-    }
-  }
+  return (
+    <MasterPage>
+      <Helmet>
+        <title>
+          {"React Movies: "}
+          {details.title || "Details"}
+        </title>
+      </Helmet>
 
-  loadMovieDetails = async () => {
-    const {
-      getMovieDetails: getMovieDetailsAction,
-      match: { params: { movieID } },
-    } = this.props;
+      <div className="wrapper details">
+        {loadingDetails ? (
+          <Loader />
+        ) : (
+          <>
+            <AlertMessages
+              show={!!detailsError}
+              type="error"
+              message={detailsError}
+            />
 
-    if (movieID) {
-      this.enableLoader(true);
-      await getMovieDetailsAction(movieID);
-      this.enableLoader(false);
-    }
-  }
-
-  enableLoader = (value) => {
-    this.setState({ loading: value });
-  }
-
-  render() {
-    const {
-      movieDetailsError,
-      movieDetails: {
-        id,
-        title,
-        overview,
-        backdrop_path,
-        vote_average,
-        release_date,
-        vote_count,
-        spoken_languages,
-        popularity,
-        homepage,
-        status,
-      },
-    } = this.props;
-
-    const { loading } = this.state;
-
-    return (
-      <MasterPage>
-        <Helmet>
-          <title>
-            {'React Movies: '}
-            {title || 'Details'}
-          </title>
-        </Helmet>
-
-        <div className="wrapper details">
-          {
-            loading && (
-              'loading...'
-            )
-          }
-
-          {
-            !loading && movieDetailsError && (
-              <AlertMessages
-                show
-                type="error"
-                message={movieDetailsError}
-              />
-            )
-          }
-
-          {
-            !loading && !movieDetailsError && id && (
+            {!detailsError && details.id && (
               <React.Fragment>
-                <h1>{title}</h1>
+                <h1>{details.title}</h1>
 
                 <Row rowSpacing={10} cellSpacing={15}>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={12} xs={12}>
                     <figure className="details-image">
-                      {
-                        backdrop_path ? (
-                          <img src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt={title} />
-                        ) : (
-                          <img src={noImageIMG} alt={title} />
-                        )
-                      }
+                      {details.backdrop_path ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`}
+                          alt={details.title}
+                        />
+                      ) : (
+                        <img src={noImageIMG} alt={details.title} />
+                      )}
                     </figure>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={12} xs={12}>
                     <Rating
                       stop={10}
                       emptySymbol={<i className="icon-star-o" />}
                       fullSymbol={<i className="icon-star" />}
-                      initialRating={vote_average}
+                      initialRating={details.vote_average}
                       className="details-rating"
                       readonly
                     />
 
-                    {
-                      status && (
-                        <h2 className="details-subtitle">
-                          <strong>Status: </strong>
-                          {status}
-                        </h2>
-                      )
-                    }
+                    {details.status && (
+                      <h2 className="details-subtitle">
+                        <strong>Status: </strong>
+                        {details.status}
+                      </h2>
+                    )}
 
-                    {
-                      release_date && (
-                        <h2 className="details-subtitle">
-                          <strong>Release Date: </strong>
-                          {moment(new Date()).format('DD/MM/YYYY')}
-                        </h2>
-                      )
-                    }
+                    {details.release_date && (
+                      <h2 className="details-subtitle">
+                        <strong>Release Date: </strong>
+                        {moment(new Date(details.release_date)).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </h2>
+                    )}
 
-                    {
-                      vote_count && (
-                        <h2 className="details-subtitle">
-                          <strong>Reviews: </strong>
-                          {vote_count}
-                        </h2>
-                      )
-                    }
+                    {details.vote_count && (
+                      <h2 className="details-subtitle">
+                        <strong>Reviews: </strong>
+                        {details.vote_count}
+                      </h2>
+                    )}
 
-                    {
-                      popularity && (
-                        <h2 className="details-subtitle">
-                          <strong>Popularity: </strong>
-                          {popularity}
-                        </h2>
-                      )
-                    }
+                    {details.popularity && (
+                      <h2 className="details-subtitle">
+                        <strong>Popularity: </strong>
+                        {details.popularity}
+                      </h2>
+                    )}
 
-                    {
-                      spoken_languages && spoken_languages.length > 0 && (
+                    {details.spoken_languages &&
+                      details.spoken_languages.length > 0 && (
                         <h2 className="details-subtitle">
                           <strong>Languages: </strong>
-                          {spoken_languages.map(language => language.name).join(', ')}
+                          {details.spoken_languages
+                            .map((language) => language.name)
+                            .join(", ")}
                         </h2>
-                      )
-                    }
+                      )}
 
-                    {
-                      homepage && (
-                        <h2 className="details-subtitle">
-                          <strong>Website: </strong>
-                          <a href={homepage}>{homepage}</a>
-                        </h2>
-                      )
-                    }
+                    {details.homepage && (
+                      <h2 className="details-subtitle">
+                        <strong>Website: </strong>
+                        <a href={details.homepage}>{details.homepage}</a>
+                      </h2>
+                    )}
 
                     <p className="details-description">
-                      {overview || 'There is no description'}
+                      {details.overview || "There is no description"}
                     </p>
                   </Col>
                 </Row>
               </React.Fragment>
-            )
-          }
-        </div>
-      </MasterPage>
-    );
-  }
-}
+            )}
+          </>
+        )}
+      </div>
+    </MasterPage>
+  );
+};
 
 Details.propTypes = {
-  getMovieDetails: PropTypes.func.isRequired,
-  movieDetails: PropTypes.instanceOf(Object),
-  movieDetailsError: PropTypes.string,
   match: PropTypes.instanceOf(Object).isRequired,
 };
 
-Details.defaultProps = {
-  movieDetails: {},
-  movieDetailsError: null,
-};
-
-const mapStateToProps = state => ({
-  movieDetails: state.movies.movieDetails,
-  movieDetailsError: state.movies.movieDetailsError,
-  error: state.movies.error,
-});
-
-export default connect(mapStateToProps, { getMovieDetails })(Details);
+export default Details;

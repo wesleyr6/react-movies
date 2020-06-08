@@ -1,8 +1,8 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import Header from '../../components/Header';
-import Banner from '../../components/Banner';
-import DiscoverMovies from '../DiscoverMovies';
+import React from "react";
+import Helmet from "react-helmet";
+import Header from "../../components/Header";
+import Banner from "../../components/Banner";
+import DiscoverMovies from "../../components/DiscoverMovies";
 
 const Home = () => (
   <React.Fragment>
