@@ -11,6 +11,7 @@ const Header = ({ history, location }) => {
 
   useEffect(() => {
     searchQueryString();
+    // eslint-disable-next-line
   }, [location.search]);
 
   const searchQueryString = () => {

@@ -100,15 +100,6 @@ const Home = ({ location }) => {
 
 Home.propTypes = {
   location: PropTypes.instanceOf(Object).isRequired,
-  searchedMovies: PropTypes.instanceOf(Array),
-  keyword: PropTypes.string,
-  error: PropTypes.string,
-};
-
-Home.defaultProps = {
-  searchedMovies: [],
-  keyword: null,
-  error: null,
 };
 
 export default Home;
