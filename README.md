@@ -1,4 +1,4 @@
-# React Movies Project usin React Hooks
+# React Movies Project using React Hooks
 
 This is a create react app using `react hooks`
 
