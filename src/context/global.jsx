@@ -8,10 +8,6 @@ export const GlobalProvider = ({ children }) => {
   const [discoverMovies, setDiscoverMovies] = useState([]);
   const [discoverMoviesError, setDiscoverMoviesError] = useState(null);
 
-  useEffect(() => {
-    loadDiscoverMovies();
-  }, []);
-
   const loadDiscoverMovies = async () => {
     try {
       const { results } = await getDiscoveryMovies();
@@ -22,6 +18,10 @@ export const GlobalProvider = ({ children }) => {
 
     setLoadingDiscoverMovies(false);
   };
+
+  useEffect(() => {
+    loadDiscoverMovies();
+  }, []);
 
   return (
     <GlobalContext.Provider

@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Header from '../Header';
+import React from "react";
+import PropTypes from "prop-types";
+import Header from "../Header";
 
 const MasterPage = ({ children }) => (
   <React.Fragment>
     <Header />
 
-    <main>
-      {children}
-    </main>
+    <main>{children}</main>
   </React.Fragment>
 );
 

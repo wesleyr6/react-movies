@@ -10,5 +10,5 @@ ReactDOM.render(
     <Routers />
   </GlobalProvider>,
 
-  document.getElementById("root")
+  document.getElementById("root"),
 );

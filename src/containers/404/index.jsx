@@ -1,6 +1,6 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import MasterPage from '../../components/MasterPage';
+import React from "react";
+import Helmet from "react-helmet";
+import MasterPage from "../../components/MasterPage";
 
 const PageNotFound = () => (
   <MasterPage>

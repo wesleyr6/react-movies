@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { REACT_APP_API_URL, REACT_APP_API_KEY } from '../config/variables';
+import axios from "axios";
+import { REACT_APP_API_URL, REACT_APP_API_KEY } from "../config/variables";
 
 export const API = REACT_APP_API_URL;
 
 const headers = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
+  Accept: "application/json",
+  "Content-Type": "application/json",
 };
 
 export const APIResquest = async (config) => {
@@ -16,7 +16,7 @@ export const APIResquest = async (config) => {
       method: config.method,
       headers: {
         ...headers,
-        ...config.headers || null,
+        ...(config.headers || null),
       },
       params: {
         ...config.params,
@@ -24,7 +24,7 @@ export const APIResquest = async (config) => {
       },
     };
 
-    if (config.method === 'POST' || config.method === 'PUT') {
+    if (config.method === "POST" || config.method === "PUT") {
       settings.data = JSON.stringify(config.data || {});
     }
 
@@ -36,9 +36,13 @@ export const APIResquest = async (config) => {
       const { data } = await axios(requestURI, requestConfig());
       return data;
     } catch (err) {
-      const errorMessage = 'Something went wrong.';
+      const errorMessage = "Something went wrong.";
 
-      if (err.response && err.response.data && err.response.data.status_message) {
+      if (
+        err.response
+        && err.response.data
+        && err.response.data.status_message
+      ) {
         throw err.response.data.status_message;
       }
 

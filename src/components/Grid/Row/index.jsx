@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const Row = (props) => {
   const {
@@ -14,7 +14,9 @@ const Row = (props) => {
   } = props;
 
   function childrenWithProps(item, ...restProps) {
-    return React.Children.map(item, child => React.cloneElement(child, ...restProps));
+    return React.Children.map(item, (child) =>
+      React.cloneElement(child, ...restProps)
+    );
   }
 
   return (
@@ -48,10 +50,10 @@ Row.propTypes = {
 };
 
 Row.defaultProps = {
-  className: '',
-  direction: 'row',
-  horizontalAlign: 'flex-start',
-  verticalAlign: 'flex-start',
+  className: "",
+  direction: "row",
+  horizontalAlign: "flex-start",
+  verticalAlign: "flex-start",
   cellSpacing: 0,
   rowSpacing: 0,
 };

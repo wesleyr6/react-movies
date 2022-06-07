@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
-import React from 'react';
-import PropTypes from 'prop-types';
-import './index.sass';
+import React from "react";
+import PropTypes from "prop-types";
+import "./index.sass";
 
 // Types (success as default): warning, success, error, info
 
@@ -10,7 +10,7 @@ class AlertMessages extends React.Component {
 
   state = {
     showAlert: false,
-  }
+  };
 
   componentDidMount() {
     this.showHideAlert();
@@ -30,30 +30,24 @@ class AlertMessages extends React.Component {
     await this.setState({
       showAlert: boolValue || show,
     });
-  }
+  };
 
   render() {
-    const {
-      type,
-      message,
-      className,
-    } = this.props;
+    const { type, message, className } = this.props;
 
-    const {
-      showAlert,
-    } = this.state;
+    const { showAlert } = this.state;
 
     const icon = () => {
       switch (type) {
-        case 'error': {
+        case "error": {
           return <i className="icon-error" />;
         }
 
-        case 'warning': {
+        case "warning": {
           return <i className="icon-warning" />;
         }
 
-        case 'info': {
+        case "info": {
           return <i className="icon-info" />;
         }
 
@@ -66,18 +60,21 @@ class AlertMessages extends React.Component {
     if (showAlert) {
       return (
         <div
-          ref={(el) => { this.AlertMessages = el; }}
+          ref={(el) => {
+            this.AlertMessages = el;
+          }}
           className={`alertMessages alertMessages-${type} ${className}`}
         >
           {icon()}
-          <span className="alertMessages-message" dangerouslySetInnerHTML={{ __html: message }} />
+          <span
+            className="alertMessages-message"
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
         </div>
       );
     }
 
-    return (
-      <React.Fragment />
-    );
+    return <React.Fragment />;
   }
 }
 
@@ -89,9 +86,9 @@ AlertMessages.propTypes = {
 };
 
 AlertMessages.defaultProps = {
-  type: 'success',
+  type: "success",
   show: true,
-  className: '',
+  className: "",
 };
 
 export default AlertMessages;

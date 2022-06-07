@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // xs = mobile
 // sm = small tablet
@@ -41,9 +41,7 @@ const Col = (props) => {
     );
   }
 
-  return (
-    <React.Fragment />
-  );
+  return <React.Fragment />;
 };
 
 Col.propTypes = {
@@ -67,12 +65,12 @@ Col.defaultProps = {
   sm: 4,
   lg: 3,
   show: true,
-  className: '',
+  className: "",
   cellSpacing: 0,
   rowSpacing: 0,
-  direction: 'row',
-  horizontalAlign: 'flex-start',
-  verticalAlign: 'flex-start',
+  direction: "row",
+  horizontalAlign: "flex-start",
+  verticalAlign: "flex-start",
 };
 
 export default Col;

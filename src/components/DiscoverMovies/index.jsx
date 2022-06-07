@@ -1,17 +1,14 @@
 import React, { useContext } from "react";
-import { Row, Col } from "../../components/Grid";
-import Cards from "../../components/Cards";
-import AlertMessages from "../../components/AlertMessages";
-import Loader from "../../components/Loader";
+import { Row, Col } from "../Grid";
+import Cards from "../Cards";
+import AlertMessages from "../AlertMessages";
+import Loader from "../Loader";
 import GlobalContext from "../../context/global";
 import "./index.sass";
 
 const DiscoverMovies = () => {
-  const {
-    loadingDiscoverMovies,
-    discoverMovies,
-    discoverMoviesError,
-  } = useContext(GlobalContext);
+  const { loadingDiscoverMovies, discoverMovies, discoverMoviesError } =
+    useContext(GlobalContext);
 
   return (
     <section className="discover-movies">
@@ -22,9 +19,9 @@ const DiscoverMovies = () => {
         </span>
       )}
 
-      {!loadingDiscoverMovies &&
-        !discoverMoviesError &&
-        discoverMovies.length > 0 && (
+      {!loadingDiscoverMovies
+        && !discoverMoviesError
+        && discoverMovies.length > 0 && (
           <Row rowSpacing={15} cellSpacing={15}>
             {discoverMovies.map((item) => (
               <Col key={item.id} lg={2} md={3} sm={6} xs={12}>
